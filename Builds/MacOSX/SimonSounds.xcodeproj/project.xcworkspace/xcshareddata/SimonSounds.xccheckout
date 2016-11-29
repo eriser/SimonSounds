@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>90783221-55D5-48A9-AE01-ACF603EB0BD4</string>
+	<key>IDESourceControlProjectName</key>
+	<string>SimonSounds</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>80EDE2AE1748F20D4D9B567023CEFCCCFB4158AA</key>
+		<string>https://github.com/jurek1mj/SimonSounds.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>Builds/MacOSX/SimonSounds.xcodeproj</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>80EDE2AE1748F20D4D9B567023CEFCCCFB4158AA</key>
+		<string>../../../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/jurek1mj/SimonSounds.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>111</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>80EDE2AE1748F20D4D9B567023CEFCCCFB4158AA</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>80EDE2AE1748F20D4D9B567023CEFCCCFB4158AA</string>
+			<key>IDESourceControlWCCName</key>
+			<string>SimonSounds</string>
+		</dict>
+	</array>
+</dict>
+</plist>

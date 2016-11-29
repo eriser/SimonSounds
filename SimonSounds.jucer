@@ -1,20 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<JUCERPROJECT id="ncpPF7" name="SimonSounds" projectType="guiapp" version="1.0.0"
+<JUCERPROJECT id="mSL2aV" name="SimonSounds" projectType="guiapp" version="1.0.0"
               bundleIdentifier="com.yourcompany.SimonSounds" includeBinaryInAppConfig="1"
-              jucerVersion="4.2.4">
-  <MAINGROUP id="IzTi5u" name="SimonSounds">
-    <GROUP id="{DF66870B-B324-4BCB-CCEE-028975DAF2F0}" name="Source">
-      <FILE id="vRWaoZ" name="OptionScreen.cpp" compile="1" resource="0"
-            file="Source/OptionScreen.cpp"/>
-      <FILE id="y4Au7q" name="OptionScreen.h" compile="0" resource="0" file="Source/OptionScreen.h"/>
-      <FILE id="OHELtn" name="PlayingScreen.cpp" compile="1" resource="0"
-            file="Source/PlayingScreen.cpp"/>
-      <FILE id="S7uA3u" name="PlayingScreen.h" compile="0" resource="0" file="Source/PlayingScreen.h"/>
-      <FILE id="lVvnhc" name="MainComponent.cpp" compile="1" resource="0"
+              jucerVersion="4.3.0">
+  <MAINGROUP id="xNq0cG" name="SimonSounds">
+    <GROUP id="{DDB89F94-7AB1-62AB-1071-8CC342D48F16}" name="Source">
+      <FILE id="S0bb60" name="PlayingScreen.cpp" compile="1" resource="0"
+            file="../../../PlayingScreen.cpp"/>
+      <FILE id="BDeyX7" name="PlayingScreen.h" compile="0" resource="0" file="../../../PlayingScreen.h"/>
+      <FILE id="EbpnSs" name="OptionScreen.cpp" compile="1" resource="0"
+            file="../../../OptionScreen.cpp"/>
+      <FILE id="W0Uv4C" name="OptionScreen.h" compile="0" resource="0" file="../../../OptionScreen.h"/>
+      <FILE id="pX3Abj" name="MainComponent.cpp" compile="1" resource="0"
             file="Source/MainComponent.cpp"/>
-      <FILE id="BF4eKm" name="MainComponent.h" compile="0" resource="0" file="Source/MainComponent.h"/>
-      <FILE id="XyAScq" name="Main.cpp" compile="1" resource="0" file="Source/Main.cpp"/>
+      <FILE id="I6QpQC" name="Main.cpp" compile="1" resource="0" file="Source/Main.cpp"/>
     </GROUP>
   </MAINGROUP>
   <EXPORTFORMATS>
@@ -37,6 +36,7 @@
         <MODULEPATH id="juce_audio_devices" path="../../juce-grapefruit-osx/JUCE/modules"/>
         <MODULEPATH id="juce_audio_formats" path="../../juce-grapefruit-osx/JUCE/modules"/>
         <MODULEPATH id="juce_audio_processors" path="../../juce-grapefruit-osx/JUCE/modules"/>
+        <MODULEPATH id="juce_audio_utils" path="../../juce-grapefruit-osx/JUCE/modules"/>
       </MODULEPATHS>
     </XCODE_MAC>
     <XCODE_IPHONE targetFolder="Builds/iOS" iosScreenOrientation="portraitlandscape">
@@ -58,6 +58,7 @@
         <MODULEPATH id="juce_audio_devices" path="../../juce-grapefruit-osx/JUCE/modules"/>
         <MODULEPATH id="juce_audio_formats" path="../../juce-grapefruit-osx/JUCE/modules"/>
         <MODULEPATH id="juce_audio_processors" path="../../juce-grapefruit-osx/JUCE/modules"/>
+        <MODULEPATH id="juce_audio_utils" path="../../juce-grapefruit-osx/JUCE/modules"/>
       </MODULEPATHS>
     </XCODE_IPHONE>
     <ANDROIDSTUDIO targetFolder="Builds/AndroidStudio">
@@ -81,6 +82,7 @@
         <MODULEPATH id="juce_audio_devices" path="../../juce-grapefruit-osx/JUCE/modules"/>
         <MODULEPATH id="juce_audio_formats" path="../../juce-grapefruit-osx/JUCE/modules"/>
         <MODULEPATH id="juce_audio_processors" path="../../juce-grapefruit-osx/JUCE/modules"/>
+        <MODULEPATH id="juce_audio_utils" path="../../juce-grapefruit-osx/JUCE/modules"/>
       </MODULEPATHS>
     </ANDROIDSTUDIO>
   </EXPORTFORMATS>
@@ -89,6 +91,7 @@
     <MODULE id="juce_audio_devices" showAllCode="1" useLocalCopy="0"/>
     <MODULE id="juce_audio_formats" showAllCode="1" useLocalCopy="0"/>
     <MODULE id="juce_audio_processors" showAllCode="1" useLocalCopy="0"/>
+    <MODULE id="juce_audio_utils" showAllCode="1" useLocalCopy="0"/>
     <MODULE id="juce_core" showAllCode="1" useLocalCopy="0"/>
     <MODULE id="juce_cryptography" showAllCode="1" useLocalCopy="0"/>
     <MODULE id="juce_data_structures" showAllCode="1" useLocalCopy="0"/>
