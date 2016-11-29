@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<JUCERPROJECT id="ncpPF7" name="SimonSounds" projectType="guiapp" version="1.0.0"
+              bundleIdentifier="com.yourcompany.SimonSounds" includeBinaryInAppConfig="1"
+              jucerVersion="4.2.4">
+  <MAINGROUP id="IzTi5u" name="SimonSounds">
+    <GROUP id="{DF66870B-B324-4BCB-CCEE-028975DAF2F0}" name="Source">
+      <FILE id="vRWaoZ" name="OptionScreen.cpp" compile="1" resource="0"
+            file="Source/OptionScreen.cpp"/>
+      <FILE id="y4Au7q" name="OptionScreen.h" compile="0" resource="0" file="Source/OptionScreen.h"/>
+      <FILE id="OHELtn" name="PlayingScreen.cpp" compile="1" resource="0"
+            file="Source/PlayingScreen.cpp"/>
+      <FILE id="S7uA3u" name="PlayingScreen.h" compile="0" resource="0" file="Source/PlayingScreen.h"/>
+      <FILE id="lVvnhc" name="MainComponent.cpp" compile="1" resource="0"
+            file="Source/MainComponent.cpp"/>
+      <FILE id="BF4eKm" name="MainComponent.h" compile="0" resource="0" file="Source/MainComponent.h"/>
+      <FILE id="XyAScq" name="Main.cpp" compile="1" resource="0" file="Source/Main.cpp"/>
+    </GROUP>
+  </MAINGROUP>
+  <EXPORTFORMATS>
+    <XCODE_MAC targetFolder="Builds/MacOSX">
+      <CONFIGURATIONS>
+        <CONFIGURATION name="Debug" isDebug="1" optimisation="1" targetName="SimonSounds"/>
+        <CONFIGURATION name="Release" isDebug="0" optimisation="3" targetName="SimonSounds"/>
+      </CONFIGURATIONS>
+      <MODULEPATHS>
+        <MODULEPATH id="juce_core" path="../../juce-grapefruit-osx/JUCE/modules"/>
+        <MODULEPATH id="juce_events" path="../../juce-grapefruit-osx/JUCE/modules"/>
+        <MODULEPATH id="juce_graphics" path="../../juce-grapefruit-osx/JUCE/modules"/>
+        <MODULEPATH id="juce_data_structures" path="../../juce-grapefruit-osx/JUCE/modules"/>
+        <MODULEPATH id="juce_gui_basics" path="../../juce-grapefruit-osx/JUCE/modules"/>
+        <MODULEPATH id="juce_gui_extra" path="../../juce-grapefruit-osx/JUCE/modules"/>
+        <MODULEPATH id="juce_cryptography" path="../../juce-grapefruit-osx/JUCE/modules"/>
+        <MODULEPATH id="juce_video" path="../../juce-grapefruit-osx/JUCE/modules"/>
+        <MODULEPATH id="juce_opengl" path="../../juce-grapefruit-osx/JUCE/modules"/>
+        <MODULEPATH id="juce_audio_basics" path="../../juce-grapefruit-osx/JUCE/modules"/>
+        <MODULEPATH id="juce_audio_devices" path="../../juce-grapefruit-osx/JUCE/modules"/>
+        <MODULEPATH id="juce_audio_formats" path="../../juce-grapefruit-osx/JUCE/modules"/>
+        <MODULEPATH id="juce_audio_processors" path="../../juce-grapefruit-osx/JUCE/modules"/>
+      </MODULEPATHS>
+    </XCODE_MAC>
+    <XCODE_IPHONE targetFolder="Builds/iOS" iosScreenOrientation="portraitlandscape">
+      <CONFIGURATIONS>
+        <CONFIGURATION name="Debug" isDebug="1" optimisation="1" targetName="SimonSounds"/>
+        <CONFIGURATION name="Release" isDebug="0" optimisation="3" targetName="SimonSounds"/>
+      </CONFIGURATIONS>
+      <MODULEPATHS>
+        <MODULEPATH id="juce_core" path="../../juce-grapefruit-osx/JUCE/modules"/>
+        <MODULEPATH id="juce_events" path="../../juce-grapefruit-osx/JUCE/modules"/>
+        <MODULEPATH id="juce_graphics" path="../../juce-grapefruit-osx/JUCE/modules"/>
+        <MODULEPATH id="juce_data_structures" path="../../juce-grapefruit-osx/JUCE/modules"/>
+        <MODULEPATH id="juce_gui_basics" path="../../juce-grapefruit-osx/JUCE/modules"/>
+        <MODULEPATH id="juce_gui_extra" path="../../juce-grapefruit-osx/JUCE/modules"/>
+        <MODULEPATH id="juce_cryptography" path="../../juce-grapefruit-osx/JUCE/modules"/>
+        <MODULEPATH id="juce_video" path="../../juce-grapefruit-osx/JUCE/modules"/>
+        <MODULEPATH id="juce_opengl" path="../../juce-grapefruit-osx/JUCE/modules"/>
+        <MODULEPATH id="juce_audio_basics" path="../../juce-grapefruit-osx/JUCE/modules"/>
+        <MODULEPATH id="juce_audio_devices" path="../../juce-grapefruit-osx/JUCE/modules"/>
+        <MODULEPATH id="juce_audio_formats" path="../../juce-grapefruit-osx/JUCE/modules"/>
+        <MODULEPATH id="juce_audio_processors" path="../../juce-grapefruit-osx/JUCE/modules"/>
+      </MODULEPATHS>
+    </XCODE_IPHONE>
+    <ANDROIDSTUDIO targetFolder="Builds/AndroidStudio">
+      <CONFIGURATIONS>
+        <CONFIGURATION name="Debug" androidArchitectures="armeabi armeabi-v7a x86" isDebug="1"
+                       optimisation="1" targetName="SimonSounds"/>
+        <CONFIGURATION name="Release" androidArchitectures="armeabi armeabi-v7a x86"
+                       isDebug="0" optimisation="3" targetName="SimonSounds"/>
+      </CONFIGURATIONS>
+      <MODULEPATHS>
+        <MODULEPATH id="juce_core" path="../../juce-grapefruit-osx/JUCE/modules"/>
+        <MODULEPATH id="juce_events" path="../../juce-grapefruit-osx/JUCE/modules"/>
+        <MODULEPATH id="juce_graphics" path="../../juce-grapefruit-osx/JUCE/modules"/>
+        <MODULEPATH id="juce_data_structures" path="../../juce-grapefruit-osx/JUCE/modules"/>
+        <MODULEPATH id="juce_gui_basics" path="../../juce-grapefruit-osx/JUCE/modules"/>
+        <MODULEPATH id="juce_gui_extra" path="../../juce-grapefruit-osx/JUCE/modules"/>
+        <MODULEPATH id="juce_cryptography" path="../../juce-grapefruit-osx/JUCE/modules"/>
+        <MODULEPATH id="juce_video" path="../../juce-grapefruit-osx/JUCE/modules"/>
+        <MODULEPATH id="juce_opengl" path="../../juce-grapefruit-osx/JUCE/modules"/>
+        <MODULEPATH id="juce_audio_basics" path="../../juce-grapefruit-osx/JUCE/modules"/>
+        <MODULEPATH id="juce_audio_devices" path="../../juce-grapefruit-osx/JUCE/modules"/>
+        <MODULEPATH id="juce_audio_formats" path="../../juce-grapefruit-osx/JUCE/modules"/>
+        <MODULEPATH id="juce_audio_processors" path="../../juce-grapefruit-osx/JUCE/modules"/>
+      </MODULEPATHS>
+    </ANDROIDSTUDIO>
+  </EXPORTFORMATS>
+  <MODULES>
+    <MODULE id="juce_audio_basics" showAllCode="1" useLocalCopy="0"/>
+    <MODULE id="juce_audio_devices" showAllCode="1" useLocalCopy="0"/>
+    <MODULE id="juce_audio_formats" showAllCode="1" useLocalCopy="0"/>
+    <MODULE id="juce_audio_processors" showAllCode="1" useLocalCopy="0"/>
+    <MODULE id="juce_core" showAllCode="1" useLocalCopy="0"/>
+    <MODULE id="juce_cryptography" showAllCode="1" useLocalCopy="0"/>
+    <MODULE id="juce_data_structures" showAllCode="1" useLocalCopy="0"/>
+    <MODULE id="juce_events" showAllCode="1" useLocalCopy="0"/>
+    <MODULE id="juce_graphics" showAllCode="1" useLocalCopy="0"/>
+    <MODULE id="juce_gui_basics" showAllCode="1" useLocalCopy="0"/>
+    <MODULE id="juce_gui_extra" showAllCode="1" useLocalCopy="0"/>
+    <MODULE id="juce_opengl" showAllCode="1" useLocalCopy="0"/>
+    <MODULE id="juce_video" showAllCode="1" useLocalCopy="0"/>
+  </MODULES>
+  <JUCEOPTIONS/>
+</JUCERPROJECT>
