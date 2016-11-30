@@ -2,7 +2,7 @@
 #define __JUCE_HEADER_B6210BBE8F3E093A__
 
 #include "../JuceLibraryCode/JuceHeader.h"
-#include "PlayingScreen.h"
+class MainContentComponent;
 
 class OptionScreen  : public Component,
                       public ComboBoxListener,
@@ -11,7 +11,7 @@ class OptionScreen  : public Component,
 {
 public:
     //==============================================================================
-    OptionScreen ();
+    OptionScreen (MainContentComponent&);
     ~OptionScreen();
 
 
@@ -21,7 +21,15 @@ public:
     void comboBoxChanged (ComboBox* comboBoxThatHasChanged) override;
     void sliderValueChanged (Slider* sliderThatWasMoved) override;
     void buttonClicked (Button* buttonThatWasClicked) override;
-
+    
+    int  key;
+    int  octave;
+    int  BPM;
+    int  numNotes;
+    int  input;
+    bool noteMode;
+    bool relativeMode;
+    
 private:
     //==============================================================================
     ScopedPointer<ComboBox> keySelector;
@@ -36,7 +44,6 @@ private:
     ScopedPointer<TextButton> absoluteButton;
     ScopedPointer<Label> totalItemsLabel;
     ScopedPointer<Label> bpmLabel;
-    PlayingScreen playingScreen;
 
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (OptionScreen)

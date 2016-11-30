@@ -1,32 +1,24 @@
-/*
-  ==============================================================================
-
-    This file was auto-generated!
-
-  ==============================================================================
-*/
-
 #ifndef MAINCOMPONENT_H_INCLUDED
 #define MAINCOMPONENT_H_INCLUDED
 
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "OptionScreen.h"
+#include "PlayingScreen.h"
 
 //==============================================================================
-/*
-    This component lives inside our window, and this is where you should put all
-    your controls and content.
-*/
-class MainContentComponent   : public AudioAppComponent
+
+class MainContentComponent   : public AudioAppComponent, public Timer
 {
 public:
     //==============================================================================
     MainContentComponent()
     {
-        addAndMakeVisible(optionScreen);
+      optionScreen = new OptionScreen(*this);
+        
+        //addAndMakeVisible(optionScreen);
+ //       addChildComponent(playingScreen);
         setSize (400, 600);
 
-        // specify the number of input and output channels that we want to open
         setAudioChannels (2, 2);
     }
 
@@ -36,6 +28,42 @@ public:
     }
 
     //==============================================================================
+    
+    void createGui ()
+    {
+        //do some stuff
+        calculateSequence();
+ //       playingScreen.addElements(optionScreen.numNotes,optionScreen.noteMode, optionScreen.relativeMode)
+   //     playingScreen->setVisible(true);
+    }
+    //==============================================================================
+    
+    void calculateSequence ()
+    {
+        
+        playingLoop();
+    }
+    //==============================================================================
+    
+    void playingLoop ()
+    {
+        //set the timer for 1 beat in ms
+     //   startTimer(60000/BPM);
+        
+        //
+        for (int seqCount=0;seqCount < 300;seqCount++){
+            
+        
+        }
+    }
+    //==============================================================================
+    
+    void timerCallback () override
+    {
+
+    }
+    //==============================================================================
+    
     void prepareToPlay (int samplesPerBlockExpected, double sampleRate) override
     {
         // This function will be called when the audio device is started, or when
@@ -49,13 +77,35 @@ public:
 
     void getNextAudioBlock (const AudioSourceChannelInfo& bufferToFill) override
     {
-        // Your audio-processing code goes here!
-
-        // For more details, see the help for AudioProcessor::getNextAudioBlock()
-
-        // Right now we are not producing any data, in which case we need to clear the buffer
-        // (to prevent the output of random noise)
-        bufferToFill.clearActiveBufferRegion();
+//        const float level = gain; // gain is updated every block
+        // getting the audio output buffer to be filled
+        // computing one block
+//        float* const buffer = bufferToFill.buffer->getWritePointer (0, bufferToFill.startSample);
+//        for (int sample = 0; sample < bufferToFill.numSamples; ++sample)
+//        {
+//            sineCarrier.setFrequency(smooth[0].tick(freq) + sineModulator.tick() * smooth[3].tick(index));
+//            buffer[sample] = sineCarrier.tick() * smooth[1].tick(level) * smooth[2].tick(onOff); // computing sample
+//        }
+//        int lengthOfOneBeatInSamples = (int)((sampleRate*60.0f)/speedButton.getValue());
+//        int alternator = 1;
+//        
+//        if (playSequence == true){
+//            for(int i=0;i < bufferSize;i++){
+//                totalSamples++;
+//                if(totalSamples%lengthOfOneBeatInSamples == 0){
+//                    
+//                    if (alternator == 1){
+//                        
+//                        output[i*nChannels] = output[i*nChannels + 1]; //something with pitchcounter
+//                    }
+//                    else{
+//                        output[i*nChannels] = output[i*nChannels + 1] = 0;
+//                    }
+//                    alternator *= -1;
+//                }
+//            }
+//        }
+        
     }
 
     void releaseResources() override
@@ -69,26 +119,22 @@ public:
     //==============================================================================
     void paint (Graphics& g) override
     {
-        // (Our component is opaque, so we must completely fill the background with a solid colour)
         g.fillAll (Colours::black);
-
-
-        // You can add your drawing code here!
     }
 
     void resized() override
     {
         optionScreen.setBounds(0, 0, getWidth(), getHeight());
-        // This is called when the MainContentComponent is resized.
-        // If you add any child components, this is where you should
-        // update their positions.
+   //     playingScreen->setBounds(0, 0, getWidth(), getHeight());
     }
 
 
 private:
     //==============================================================================
-
-       OptionScreen optionScreen;
+        float gain = .8;
+        float seqArray[300];
+        OptionScreen optionScreen;
+    //    PlayingScreen* playingScreen;
 
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainContentComponent)

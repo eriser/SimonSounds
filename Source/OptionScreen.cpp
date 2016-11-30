@@ -1,8 +1,7 @@
 #include "OptionScreen.h"
-
-
+#include "MainComponent.cpp"
 //==============================================================================
-OptionScreen::OptionScreen ()
+OptionScreen::OptionScreen (MainContentComponent&)
 {
 
     addAndMakeVisible (keySelector = new ComboBox ("keySelector"));
@@ -111,7 +110,6 @@ OptionScreen::OptionScreen ()
     bpmLabel->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
 
     
-    addChildComponent(playingScreen);
     setSize (400, 600);
 
 }
@@ -155,8 +153,6 @@ void OptionScreen::resized()
     absoluteButton->setBounds (272, 72, 72, 24);
     totalItemsLabel->setBounds (272, 120, 72, 24);
     bpmLabel->setBounds (208, 120, 56, 24);
-    
-    playingScreen.setBounds(0, 0, getWidth(), getHeight());
 
 }
 
@@ -164,15 +160,15 @@ void OptionScreen::comboBoxChanged (ComboBox* comboBoxThatHasChanged)
 {
     if (comboBoxThatHasChanged == keySelector)
     {
-
+        key = keySelector->getSelectedItemIndex();
     }
     else if (comboBoxThatHasChanged == octaveSelector)
     {
-
+        octave = octaveSelector->getSelectedItemIndex();
     }
     else if (comboBoxThatHasChanged == inputSelector)
     {
-
+      //  look into this later
     }
 }
 
@@ -180,11 +176,11 @@ void OptionScreen::sliderValueChanged (Slider* sliderThatWasMoved)
 {
     if (sliderThatWasMoved == bpmSlider)
     {
-
+        BPM = bpmSlider->getValue();
     }
     else if (sliderThatWasMoved == numNotesSlider)
     {
-
+        numNotes = numNotesSlider->getValue();
     }
 }
 
@@ -193,24 +189,23 @@ void OptionScreen::buttonClicked (Button* buttonThatWasClicked)
 
     if (buttonThatWasClicked == startButton)
     {
-        playingScreen.setVisible(true);
-        
+        MainContentComponent::createGui();
     }
     else if (buttonThatWasClicked == noteButton)
     {
-
+        noteMode = true;
     }
     else if (buttonThatWasClicked == chordButton)
     {
-
+        noteMode = false;
     }
     else if (buttonThatWasClicked == relativeButton)
     {
-
+        relativeMode = true;
     }
     else if (buttonThatWasClicked == absoluteButton)
     {
-
+        relativeMode = false;
     }
 
 }

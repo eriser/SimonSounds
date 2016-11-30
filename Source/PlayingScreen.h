@@ -13,6 +13,7 @@ public:
 
     //==============================================================================
 
+    void addElements(int numNotes, bool noteMode, bool relativeMode);
     void paint (Graphics& g) override;
     void resized() override;
     void buttonClicked (Button* buttonThatWasClicked) override;

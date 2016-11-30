@@ -5,12 +5,15 @@
               jucerVersion="4.3.0">
   <MAINGROUP id="xNq0cG" name="SimonSounds">
     <GROUP id="{DDB89F94-7AB1-62AB-1071-8CC342D48F16}" name="Source">
-      <FILE id="S0bb60" name="PlayingScreen.cpp" compile="1" resource="0"
-            file="../../../PlayingScreen.cpp"/>
-      <FILE id="BDeyX7" name="PlayingScreen.h" compile="0" resource="0" file="../../../PlayingScreen.h"/>
-      <FILE id="EbpnSs" name="OptionScreen.cpp" compile="1" resource="0"
-            file="../../../OptionScreen.cpp"/>
-      <FILE id="W0Uv4C" name="OptionScreen.h" compile="0" resource="0" file="../../../OptionScreen.h"/>
+      <GROUP id="{C2D4809D-5A48-304E-A7C3-138017D63BE1}" name="Faust">
+        <FILE id="Aq1gVC" name="Square.h" compile="0" resource="0" file="../SimonSounds/Source/Faust/Square.h"/>
+      </GROUP>
+      <FILE id="w7HaG1" name="OptionScreen.cpp" compile="1" resource="0"
+            file="Source/OptionScreen.cpp"/>
+      <FILE id="MeEEZN" name="OptionScreen.h" compile="0" resource="0" file="Source/OptionScreen.h"/>
+      <FILE id="CNaU3A" name="PlayingScreen.h" compile="0" resource="0" file="Source/PlayingScreen.h"/>
+      <FILE id="YTh9GV" name="PlayingScreen.cpp" compile="1" resource="0"
+            file="Source/PlayingScreen.cpp"/>
       <FILE id="pX3Abj" name="MainComponent.cpp" compile="1" resource="0"
             file="Source/MainComponent.cpp"/>
       <FILE id="I6QpQC" name="Main.cpp" compile="1" resource="0" file="Source/Main.cpp"/>

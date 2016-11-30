@@ -1,100 +1,13 @@
-/*
-  ==============================================================================
-
-  This is an automatically generated GUI class created by the Projucer!
-
-  Be careful when adding custom code to these files, as only the code within
-  the "//[xyz]" and "//[/xyz]" sections will be retained when the file is loaded
-  and re-saved.
-
-  Created with Projucer version: 4.2.4
-
-  ------------------------------------------------------------------------------
-
-  The Projucer is part of the JUCE library - "Jules' Utility Class Extensions"
-  Copyright (c) 2015 - ROLI Ltd.
-
-  ==============================================================================
-*/
-
-//[Headers] You can add your own extra header files here...
-//[/Headers]
-
 #include "PlayingScreen.h"
-
-
-//[MiscUserDefs] You can add your own user definitions and misc code here...
-//[/MiscUserDefs]
 
 //==============================================================================
 PlayingScreen::PlayingScreen ()
 {
-    //[Constructor_pre] You can add your own custom stuff here..
-    //[/Constructor_pre]
 
-    addAndMakeVisible (playButton = new TextButton ("playButton"));
-    playButton->setButtonText (TRANS("1"));
-    playButton->addListener (this);
-
-    addAndMakeVisible (playButton2 = new TextButton ("playButton"));
-    playButton2->setButtonText (TRANS("1"));
-    playButton2->addListener (this);
-
-    addAndMakeVisible (playButton3 = new TextButton ("playButton"));
-    playButton3->setButtonText (TRANS("1"));
-    playButton3->addListener (this);
-
-    addAndMakeVisible (playButton4 = new TextButton ("playButton"));
-    playButton4->setButtonText (TRANS("1"));
-    playButton4->addListener (this);
-
-    addAndMakeVisible (playButton5 = new TextButton ("playButton"));
-    playButton5->setButtonText (TRANS("1"));
-    playButton5->addListener (this);
-
-    addAndMakeVisible (playButton6 = new TextButton ("playButton"));
-    playButton6->setButtonText (TRANS("1"));
-    playButton6->addListener (this);
-
-    addAndMakeVisible (playButton7 = new TextButton ("playButton"));
-    playButton7->setButtonText (TRANS("1"));
-    playButton7->addListener (this);
-
-    addAndMakeVisible (playButton8 = new TextButton ("playButton"));
-    playButton8->setButtonText (TRANS("1"));
-    playButton8->addListener (this);
-
-    addAndMakeVisible (playButton9 = new TextButton ("playButton"));
-    playButton9->setButtonText (TRANS("1"));
-    playButton9->addListener (this);
-
-    addAndMakeVisible (playButton10 = new TextButton ("playButton"));
-    playButton10->setButtonText (TRANS("1"));
-    playButton10->addListener (this);
-
-    addAndMakeVisible (playButton11 = new TextButton ("playButton"));
-    playButton11->setButtonText (TRANS("1"));
-    playButton11->addListener (this);
-
-    addAndMakeVisible (playButton12 = new TextButton ("playButton"));
-    playButton12->setButtonText (TRANS("1"));
-    playButton12->addListener (this);
-
-
-    //[UserPreSize]
-    //[/UserPreSize]
-
-   // setSize (400, 600);
-   // addChildComponent(optionScreen);
-
-    //[Constructor] You can add your own custom stuff here..
-    //[/Constructor]
 }
 
 PlayingScreen::~PlayingScreen()
 {
-    //[Destructor_pre]. You can add your own custom destruction code here..
-    //[/Destructor_pre]
 
     playButton = nullptr;
     playButton2 = nullptr;
@@ -109,27 +22,43 @@ PlayingScreen::~PlayingScreen()
     playButton11 = nullptr;
     playButton12 = nullptr;
 
+}
+//==============================================================================
+void PlayingScreen::addElements(int numNotes, bool noteMode, bool relativeMode){
+   
+    for (int i=0;i < numNotes;i++){
+        addAndMakeVisible (playButton = new TextButton ("playButton"));
+        if (noteMode){
+            if(relativeMode){
+            
+            }
+            else{
+        
+            }
+        }else{ //chordMode
+            if(relativeMode){
+                
+            }
+            else{
+                
+            }
+        }
+        playButton->setButtonText (TRANS("1"));
+        
+        
+        playButton->addListener (this);
+    }
 
-    //[Destructor]. You can add your own custom destruction code here..
-    //[/Destructor]
 }
 
 //==============================================================================
 void PlayingScreen::paint (Graphics& g)
 {
-    //[UserPrePaint] Add your own custom painting code here..
-    //[/UserPrePaint]
-
     g.fillAll (Colour (0xff292929));
-
-    //[UserPaint] Add your own custom painting code here..
-    //[/UserPaint]
 }
 
 void PlayingScreen::resized()
 {
-    //[UserPreResize] Add your own custom resize code here..
-    //[/UserPreResize]
 
     playButton->setBounds (16, 64, 71, 72);
     playButton2->setBounds (112, 64, 71, 72);
@@ -143,10 +72,7 @@ void PlayingScreen::resized()
     playButton10->setBounds (112, 400, 71, 72);
     playButton11->setBounds (208, 400, 71, 72);
     playButton12->setBounds (296, 400, 71, 72);
-   // optionScreen.setBounds(0, 0, getWidth(), getHeight());
-    
-    //[UserResized] Add your own custom resize handling here..
-    //[/UserResized]
+
 }
 
 void PlayingScreen::buttonClicked (Button* buttonThatWasClicked)
@@ -214,14 +140,7 @@ void PlayingScreen::buttonClicked (Button* buttonThatWasClicked)
         //[/UserButtonCode_playButton12]
     }
 
-    //[UserbuttonClicked_Post]
-    //[/UserbuttonClicked_Post]
 }
-
-
-
-//[MiscUserCode] You can add your own definitions of your custom methods or any other code here...
-//[/MiscUserCode]
 
 
 //==============================================================================
