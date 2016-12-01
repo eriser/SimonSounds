@@ -1,9 +1,12 @@
 #include "OptionScreen.h"
-#include "MainComponent.cpp"
+#include "MainComponent.h"
 //==============================================================================
-OptionScreen::OptionScreen (MainContentComponent&)
+//OptionScreen::OptionScreen (MainContentComponent& myMainComponent)
+OptionScreen::OptionScreen ()
 {
 
+   // mainComponent = &myMainComponent;
+    
     addAndMakeVisible (keySelector = new ComboBox ("keySelector"));
     keySelector->setEditableText (false);
     keySelector->setJustificationType (Justification::centred);
@@ -189,7 +192,7 @@ void OptionScreen::buttonClicked (Button* buttonThatWasClicked)
 
     if (buttonThatWasClicked == startButton)
     {
-        MainContentComponent::createGui();
+      //  mainComponent;
     }
     else if (buttonThatWasClicked == noteButton)
     {

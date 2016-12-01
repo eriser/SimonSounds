@@ -2,7 +2,8 @@
 #define __JUCE_HEADER_B6210BBE8F3E093A__
 
 #include "../JuceLibraryCode/JuceHeader.h"
-class MainContentComponent;
+//#include "MainComponent.h"
+//class MainContentComponent;
 
 class OptionScreen  : public Component,
                       public ComboBoxListener,
@@ -11,7 +12,8 @@ class OptionScreen  : public Component,
 {
 public:
     //==============================================================================
-    OptionScreen (MainContentComponent&);
+//    OptionScreen (MainContentComponent&);
+    OptionScreen();
     ~OptionScreen();
 
 
@@ -44,6 +46,9 @@ private:
     ScopedPointer<TextButton> absoluteButton;
     ScopedPointer<Label> totalItemsLabel;
     ScopedPointer<Label> bpmLabel;
+ //   MainContentComponent* mainComponent;
+    
+
 
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (OptionScreen)
