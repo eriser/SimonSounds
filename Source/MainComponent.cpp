@@ -83,7 +83,7 @@ public:
         inputSelector->addItem (TRANS("Screen Buttons"), 1);
         inputSelector->addItem(TRANS("Internal Mic"), 2);
         inputSelector->addItemList (midiInputs, 3);
-        inputSelector->setSelectedId(0); // default
+        inputSelector->setSelectedId(1); // default
         
         addAndMakeVisible (startButton = new TextButton ("startButton"));
         startButton->setButtonText (TRANS("Start"));
@@ -94,6 +94,7 @@ public:
         noteButton->setConnectedEdges (Button::ConnectedOnRight);
         noteButton->setRadioGroupId (1234);
         noteButton->setClickingTogglesState(true);
+        noteButton->setToggleState(true, true);
         noteButton->addListener (this);
         
         addAndMakeVisible (chordButton = new TextButton ("chordButton"));
@@ -141,8 +142,30 @@ public:
             addChildComponent(playButton[i]);
         }
 
-        setSize (400, 600);
+        setSize (375, 600);
         setAudioChannels (2, 2);
+        
+        relChromNoteLabels.add("U");
+        relChromNoteLabels.add("m2");
+        relChromNoteLabels.add("M2");
+        relChromNoteLabels.add("m3");
+        relChromNoteLabels.add("M3");
+        relChromNoteLabels.add("P4");
+        relChromNoteLabels.add("TT");
+        relChromNoteLabels.add("P5");
+        relChromNoteLabels.add("m6");
+        relChromNoteLabels.add("M6");
+        relChromNoteLabels.add("m7");
+        relChromNoteLabels.add("M7");
+        
+        relMajNoteLabels.add("U");
+        relMajNoteLabels.add("M2");
+        relMajNoteLabels.add("M3");
+        relMajNoteLabels.add("P4");
+        relMajNoteLabels.add("P5");
+        relMajNoteLabels.add("M6");
+        relMajNoteLabels.add("M7");
+        
     }
 
     ~MainContentComponent()
@@ -181,6 +204,7 @@ public:
         else if (comboBoxThatHasChanged == inputSelector)
         {
             //  look into this later
+            input = inputSelector->getSelectedItemIndex();
         }
     }
     
@@ -222,6 +246,13 @@ public:
         
         for (int i=0;i<12;i++){
             if (buttonThatWasClicked == playButton[i]){
+                if (input == 0){
+                    if (playButton[i]->getName().getIntValue() == pitchSequence[seqCount])
+                        match = true;
+                    else{
+                        match = false;
+                    }
+                }
             }
         }
     }
@@ -279,7 +310,6 @@ public:
     void startPressed ()
     {
         calculateSequence();
-        configurePlayingScreen();
         hideOptionScreen();
         displayPlayingScreen();
         
@@ -291,15 +321,14 @@ public:
     
     void calculateSequence ()
     {
-        
         //set parameters based on length of scale - major or chromatic
-        if (key == 0){
-            rootNote = octave * 12;
+        if (key == 12){
+            rootNote = (octave * 12) + 12;
             baseScale.resize(12);
             baseScale = {0,1,2,3,4,5,6,7,8,9,10,11};
         }
         else{
-            rootNote = key + (octave * 12);
+            rootNote = key + (octave * 12) + 12;
             baseScale.resize(8);
             baseScale = {0,2,4,5,7,9,11};
         }
@@ -308,31 +337,33 @@ public:
         currentScale.resize(numNotes);
         for (int i=0;i<numNotes;i++){
             currentScale[i] = rootNote + baseScale[i];
-        }
-
-
-        for(int i=0;i<300;i++){
-            pitchSequence[i] = pitchesToChooseFrom[rand() % numNotes];
-        }
-    }
-
-    //==============================================================================
-    
-    void configurePlayingScreen ()
-    {
-        for(int i=0;i<=numNotes;i++){
-            if(noteMode){
-                if(relativeMode){
-                    
+            //setup buttons
+            if (relativeMode){
+                if (key == 12) {
+                    playButton[i]->setButtonText(relChromNoteLabels[i]);
                 }else{
-                
+                    playButton[i]->setButtonText(relMajNoteLabels[i]);
                 }
+            }else{
+                playButton[i]->setButtonText(getMidiNoteName(currentScale[i],false,false,false));
             }
-            else{
-                
+            playButton[i]->setName(String(currentScale[i]));
+        }
+
+        //when in relative mode the sequence should start with the reference pitch
+        if (relativeMode){
+            pitchSequence[0] = rootNote;
+            for(int i=1;i<300;i++){
+                pitchSequence[i] = currentScale[rand() % numNotes];
+            }
+        }else{
+            for(int i=0;i<300;i++){
+                pitchSequence[i] = currentScale[rand() % numNotes];
             }
         }
     }
+
+
     //==============================================================================
     
     void playingLoop ()
@@ -341,21 +372,23 @@ public:
         currCount = 1;
         seqCount = 0;
         alt = 1;
+        waitForPlayer = false;
+        //timerCounter = 0;
         startTimer((int)60000/BPM);
     }
     //==============================================================================
     
     void timerCallback () override
-    {
-        if (!waitForPlayer){                        //computer is playing
+    {   //computer is playing
+            timerCounter++;
+        if (!waitForPlayer){
             if (seqCount<currCount){
                 if (alt == 1){
-                    squareControl.setParamValue("/saw/gate", 1);
-                    squareControl.setParamValue("/saw/freq",getMidiNoteInHertz(pitchSequence[seqCount], 440));
-  
+                    squareControl.setParamValue("/square/freq",getMidiNoteInHertz(pitchSequence[seqCount], 440));
+                    squareControl.setParamValue("/square/gate", 1);
                 }
                 else{
-                    squareControl.setParamValue("/saw/gate", 0);
+                    squareControl.setParamValue("/square/gate", 0);
                     seqCount++;
                 }
                 
@@ -364,13 +397,15 @@ public:
                 seqCount = 0;
                 waitForPlayer = true;
             }
-        }else{                                      //player is inputting
+        //player is inputting
+        }else{
             if (seqCount<currCount){
                 if (alt == 1){
                     //wait a beat for input
                 }else {
                     if (match){
                         seqCount++;
+                        match = false;
                     }else{
                         stopTimer();
                         hidePlayingScreen();
@@ -393,10 +428,33 @@ public:
     {
         return frequencyOfA * pow (2.0, (noteNumber - 69) / 12.0);
     }
+    
+    //==============================================================================
+    String getMidiNoteName (int note, bool useSharps, bool includeOctaveNumber, int octaveNumForMiddleC)
+    {
+        static const char* const sharpNoteNames[] = { "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B" };
+        static const char* const flatNoteNames[]  = { "C", "Db", "D", "Eb", "E", "F", "Gb", "G", "Ab", "A", "Bb", "B" };
+        
+        if (isPositiveAndBelow (note, (int) 128))
+        {
+            String s (useSharps ? sharpNoteNames [note % 12]
+                      : flatNoteNames  [note % 12]);
+            
+            if (includeOctaveNumber)
+                s << (note / 12 + (octaveNumForMiddleC - 5));
+            
+            return s;
+        }
+        
+        return String();
+    }
     //==============================================================================
     
     void prepareToPlay (int samplesPerBlockExpected, double sampleRate) override
     {
+        currentSampleRate = sampleRate;
+        blockSize = samplesPerBlockExpected;
+        
         square.init(sampleRate); // initializing the Faust module
         square.buildUserInterface(&squareControl); // linking the Faust module to the controler
         
@@ -407,24 +465,15 @@ public:
         }
         
         // setting default values for the Faust module parameters
-        squareControl.setParamValue("/saw/freq",1000);
-        squareControl.setParamValue("/saw/gain",0.5);
+      //  squareControl.setParamValue("/square/freq",1000);
+        squareControl.setParamValue("/square/gain",0.8);
         
     }
 
     void getNextAudioBlock (const AudioSourceChannelInfo& bufferToFill) override
     {
-        bufferToFill.clearActiveBufferRegion();
-        
-//        const float level = gain; // gain is updated every block
-        // getting the audio output buffer to be filled
-        // computing one block
-//        float* const buffer = bufferToFill.buffer->getWritePointer (0, bufferToFill.startSample);
-//        for (int sample = 0; sample < bufferToFill.numSamples; ++sample)
-//        {
-//            sineCarrier.setFrequency(smooth[0].tick(freq) + sineModulator.tick() * smooth[3].tick(index));
-//            buffer[sample] = sineCarrier.tick() * smooth[1].tick(level) * smooth[2].tick(onOff); // computing sample
-//        }
+        audioBuffer = bufferToFill.buffer->getArrayOfWritePointers();
+        square.compute(blockSize, NULL, audioBuffer);
         
     }
 
@@ -443,16 +492,16 @@ public:
     //==============================================================================
     void resized() override
     {
-        playButton[0]->setBounds (16, 64, 71, 72);
-        playButton[1]->setBounds (112, 64, 71, 72);
-        playButton[2]->setBounds (208, 64, 71, 72);
-        playButton[3]->setBounds (304, 64, 71, 72);
-        playButton[4]->setBounds (16, 240, 71, 72);
-        playButton[5]->setBounds (112, 240, 71, 72);
-        playButton[6]->setBounds (208, 240, 71, 72);
-        playButton[7]->setBounds (304, 240, 71, 72);
-        playButton[8]->setBounds (16, 400, 71, 72);
-        playButton[9]->setBounds (112, 400, 71, 72);
+        playButton[0]->setBounds  (16,   64, 71, 72);
+        playButton[1]->setBounds  (112,  64, 71, 72);
+        playButton[2]->setBounds  (208,  64, 71, 72);
+        playButton[3]->setBounds  (304,  64, 71, 72);
+        playButton[4]->setBounds  (16,  240, 71, 72);
+        playButton[5]->setBounds  (112, 240, 71, 72);
+        playButton[6]->setBounds  (208, 240, 71, 72);
+        playButton[7]->setBounds  (304, 240, 71, 72);
+        playButton[8]->setBounds  (16,  400, 71, 72);
+        playButton[9]->setBounds  (112, 400, 71, 72);
         playButton[10]->setBounds (208, 400, 71, 72);
         playButton[11]->setBounds (304, 400, 71, 72);
         
@@ -474,26 +523,14 @@ public:
 private:
     //==============================================================================
     
-    float   gain = .8;
+    int timerCounter = 0;
+    
     float   seqArray[300];
     int     currCount;
     int     seqCount;
     int     alt;
     bool    waitForPlayer;
     bool    match = false;
-   
-//    ScopedPointer<TextButton> playButton1;
-//    ScopedPointer<TextButton> playButton2;
-//    ScopedPointer<TextButton> playButton3;
-//    ScopedPointer<TextButton> playButton4;
-//    ScopedPointer<TextButton> playButton5;
-//    ScopedPointer<TextButton> playButton6;
-//    ScopedPointer<TextButton> playButton7;
-//    ScopedPointer<TextButton> playButton8;
-//    ScopedPointer<TextButton> playButton9;
-//    ScopedPointer<TextButton> playButton10;
-//    ScopedPointer<TextButton> playButton11;
-//    ScopedPointer<TextButton> playButton12;
     
     OwnedArray<TextButton> playButton;
     
@@ -522,6 +559,13 @@ private:
     std::vector<int> baseScale;
     std::vector<int> currentScale;
     
+    int blockSize;
+    double currentSampleRate;
+    
+    StringArray relMajNoteLabels;
+    StringArray relChromNoteLabels;
+    StringArray absoluteNoteLabels;
+    
     int C0_Scale[7]   = {0,2,4,5,7,9,11};
     int chromatic[12] = {0,1,2,3,4,5,6,7,8,9,10,11};
     int totalNotes;
@@ -529,12 +573,11 @@ private:
     int pitchSequence[300];
     int pitchesToChooseFrom[12];
     
+    float** audioBuffer;
+    
     Square square;
-    MapUI squareControl;
+    MapUI  squareControl;
     
-    
-//    PlayingScreen* playingScreen;
-//    OptionScreen optionScreen;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainContentComponent)
 };

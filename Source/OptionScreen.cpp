@@ -1,5 +1,5 @@
 #include "OptionScreen.h"
-#include "MainComponent.h"
+//#include "MainComponent.h"
 //==============================================================================
 //OptionScreen::OptionScreen (MainContentComponent& myMainComponent)
 OptionScreen::OptionScreen ()
