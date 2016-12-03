@@ -13,12 +13,15 @@ class MainContentComponent   :  public AudioAppComponent,
                                 public ComboBoxListener,
                                 public SliderListener,
                                 public ButtonListener,
-                                public MidiInputCallback
+                                public MidiInputCallback,
+                                public MidiKeyboardStateListener
 {
 public:
     //==============================================================================
     MainContentComponent()
     {
+        startTime = Time::getMillisecondCounterHiRes() * 0.001;
+        lastInputIndex = 0;
         
         addAndMakeVisible (keySelector = new ComboBox ("keySelector"));
         keySelector->setEditableText (false);
@@ -62,14 +65,14 @@ public:
         bpmSlider->setRange (40, 140, 5);
         bpmSlider->setSliderStyle (Slider::LinearVertical);
         bpmSlider->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
-        bpmSlider->setValue(60);
+        bpmSlider->setValue(90);
         bpmSlider->addListener (this);
         
         addAndMakeVisible (numNotesSlider = new Slider ("numNotesSlider"));
-        numNotesSlider->setRange (1, 12, 1);
+        numNotesSlider->setRange (1, 7, 1);
         numNotesSlider->setSliderStyle (Slider::LinearVertical);
         numNotesSlider->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
-        numNotesSlider->setValue(8);
+        numNotesSlider->setValue(7);
         numNotesSlider->addListener (this);
         
         addAndMakeVisible (inputSelector = new ComboBox ("inputSelector"));
@@ -109,6 +112,7 @@ public:
         relativeButton->setConnectedEdges (Button::ConnectedOnRight);
         relativeButton->setRadioGroupId (2345);
         relativeButton->setClickingTogglesState(true);
+        relativeButton->setToggleState(true, true);
         relativeButton->addListener (this);
         
         addAndMakeVisible (absoluteButton = new TextButton ("absoluteButton"));
@@ -139,6 +143,7 @@ public:
         
         for (int i=0;i<12;i++){
             playButton.add(new TextButton ("playButton" + String(i)));
+            playButton[i]->addListener(this);
             addChildComponent(playButton[i]);
         }
 
@@ -187,15 +192,16 @@ public:
         shutdownAudio();
     }
     
-    void handleIncomingMidiMessage (MidiInput*, const MidiMessage& message) override {
-    
-    }
-    
     void comboBoxChanged (ComboBox* comboBoxThatHasChanged) override
     {
         if (comboBoxThatHasChanged == keySelector)
         {
             key = keySelector->getSelectedItemIndex();
+            if (key == 12){
+                numNotesSlider->setRange (1, 12, 1);
+            }else{
+                numNotesSlider->setRange (1, 7, 1);
+            }
         }
         else if (comboBoxThatHasChanged == octaveSelector)
         {
@@ -203,8 +209,10 @@ public:
         }
         else if (comboBoxThatHasChanged == inputSelector)
         {
-            //  look into this later
             input = inputSelector->getSelectedItemIndex();
+            if (input >1){
+                setMidiInput(input);
+            }
         }
     }
     
@@ -312,9 +320,6 @@ public:
         calculateSequence();
         hideOptionScreen();
         displayPlayingScreen();
-        
-        currCount = 1;
-        alt = 1;
         playingLoop();
     }
     //==============================================================================
@@ -368,19 +373,21 @@ public:
     
     void playingLoop ()
     {
-        //set the timer for 1 beat in ms
+
         currCount = 1;
         seqCount = 0;
         alt = 1;
         waitForPlayer = false;
         //timerCounter = 0;
+        
+        //set the timer for 1 beat in ms
         startTimer((int)60000/BPM);
     }
     //==============================================================================
     
     void timerCallback () override
     {   //computer is playing
-            timerCounter++;
+        //    timerCounter++;
         if (!waitForPlayer){
             if (seqCount<currCount){
                 if (alt == 1){
@@ -417,7 +424,7 @@ public:
             if (seqCount == currCount){
                 seqCount = 0;
                 currCount++;
-                waitForPlayer = true;
+                waitForPlayer = false;
             }
         }
         alt *= -1;
@@ -449,7 +456,57 @@ public:
         return String();
     }
     //==============================================================================
-    
+    void setMidiInput (int index)
+    {
+        index -= 2;
+        const StringArray list (MidiInput::getDevices());
+        
+        deviceManager.removeMidiInputCallback (list[lastInputIndex], this);
+        
+        const String newInput (list[index]);
+        
+        if (! deviceManager.isMidiInputEnabled (newInput))
+            deviceManager.setMidiInputEnabled (newInput, true);
+        
+        deviceManager.addMidiInputCallback (newInput, this);
+ //       midiInputList.setSelectedId (index + 1, dontSendNotification);
+        
+        lastInputIndex = index;
+    }
+    //==============================================================================
+    void handleIncomingMidiMessage (MidiInput* source, const MidiMessage& message) override
+    {
+        if (message.isNoteOn()){
+            DBG(String(message.getNoteNumber()));
+            if (message.getNoteNumber() == pitchSequence[seqCount]){
+                match = true;
+            }else{
+                match = false;
+            }
+        }
+        const ScopedValueSetter<bool> scopedInputFlag (isAddingFromMidiInput, true);
+        keyboardState.processNextMidiEvent (message);
+    }
+    //==============================================================================
+    void handleNoteOn (MidiKeyboardState*, int midiChannel, int midiNoteNumber, float velocity) override
+    {
+        
+        if (! isAddingFromMidiInput)
+        {
+            MidiMessage m (MidiMessage::noteOn (midiChannel, midiNoteNumber, velocity));
+            m.setTimeStamp (Time::getMillisecondCounterHiRes() * 0.001);
+        }
+    }
+    //==============================================================================
+    void handleNoteOff (MidiKeyboardState*, int midiChannel, int midiNoteNumber, float velocity) override
+    {
+        if (! isAddingFromMidiInput)
+        {
+            MidiMessage m (MidiMessage::noteOff (midiChannel, midiNoteNumber));
+            m.setTimeStamp (Time::getMillisecondCounterHiRes() * 0.001);
+        }
+    }
+    //==============================================================================
     void prepareToPlay (int samplesPerBlockExpected, double sampleRate) override
     {
         currentSampleRate = sampleRate;
@@ -578,6 +635,11 @@ private:
     Square square;
     MapUI  squareControl;
     
+    AudioDeviceManager deviceManager;
+    MidiKeyboardState keyboardState;
+    int lastInputIndex;
+    double startTime;
+    bool isAddingFromMidiInput = false;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainContentComponent)
 };
