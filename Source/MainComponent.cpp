@@ -2,7 +2,9 @@
 #define MAINCOMPONENT_H_INCLUDED
 
 #include "../JuceLibraryCode/JuceHeader.h"
-#include "Square.h"
+#include "faust/Square.h"
+#include <aubio/aubio.h>
+
 //#include "OptionScreen.h"
 //#include "PlayingScreen.h"
 
@@ -22,6 +24,8 @@ public:
     {
         startTime = Time::getMillisecondCounterHiRes() * 0.001;
         lastInputIndex = 0;
+        
+        cachedImage_background = ImageCache::getFromMemory (BinaryData::background_jpg, BinaryData::background_jpgSize);
         
         addAndMakeVisible (keySelector = new ComboBox ("keySelector"));
         keySelector->setEditableText (false);
@@ -91,8 +95,9 @@ public:
         addAndMakeVisible (startButton = new TextButton ("startButton"));
         startButton->setButtonText (TRANS("Start"));
         startButton->addListener (this);
-        
-        addAndMakeVisible (noteButton = new TextButton ("noteButton"));
+
+        addChildComponent(noteButton = new TextButton ("noteButton"));
+//        addAndMakeVisible (noteButton = new TextButton ("noteButton"));
         noteButton->setButtonText (TRANS("Notes"));
         noteButton->setConnectedEdges (Button::ConnectedOnRight);
         noteButton->setRadioGroupId (1234);
@@ -100,7 +105,8 @@ public:
         noteButton->setToggleState(true, true);
         noteButton->addListener (this);
         
-        addAndMakeVisible (chordButton = new TextButton ("chordButton"));
+        addChildComponent(chordButton = new TextButton ("chordButton"));
+//        addAndMakeVisible (chordButton = new TextButton ("chordButton"));
         chordButton->setButtonText (TRANS("Chords"));
         chordButton->setConnectedEdges (Button::ConnectedOnLeft);
         chordButton->setRadioGroupId (1234);
@@ -114,6 +120,7 @@ public:
         relativeButton->setClickingTogglesState(true);
         relativeButton->setToggleState(true, true);
         relativeButton->addListener (this);
+        relativeButton->setColour (TextButton::buttonOnColourId, Colour (0xff656566));
         
         addAndMakeVisible (absoluteButton = new TextButton ("absoluteButton"));
         absoluteButton->setButtonText (TRANS("Absolute"));
@@ -121,6 +128,7 @@ public:
         absoluteButton->setRadioGroupId (2345);
         absoluteButton->setClickingTogglesState(true);
         absoluteButton->addListener (this);
+        absoluteButton->setColour (TextButton::buttonOnColourId, Colour (0xff656566));
         
         addAndMakeVisible (totalItemsLabel = new Label ("totalItemsLabel",
                                                         TRANS("Total Items")));
@@ -148,7 +156,7 @@ public:
         }
 
         setSize (375, 600);
-        setAudioChannels (2, 2);
+        setAudioChannels (1, 2);
         
         relChromNoteLabels.add("U");
         relChromNoteLabels.add("m2");
@@ -189,6 +197,7 @@ public:
         totalItemsLabel = nullptr;
         bpmLabel = nullptr;
         
+        closeAubioPitch();
         shutdownAudio();
     }
     
@@ -254,6 +263,7 @@ public:
         
         for (int i=0;i<12;i++){
             if (buttonThatWasClicked == playButton[i]){
+                //check for match
                 if (input == 0){
                     if (playButton[i]->getName().getIntValue() == pitchSequence[seqCount])
                         match = true;
@@ -265,6 +275,20 @@ public:
         }
     }
     
+    void buttonStateChanged(Button* buttonThatWasChanged) override
+    {
+        for (int i=0;i<12;i++){
+            if (buttonThatWasChanged == playButton[i] && waitForPlayer){
+                if (buttonThatWasChanged->isDown()){
+                    //play note
+                    squareControl.setParamValue("/square/freq",getMidiNoteInHertz(playButton[i]->getName().getIntValue(), 440));
+                    squareControl.setParamValue("/square/gate", 1);
+                }else{
+                    squareControl.setParamValue("/square/gate", 0);
+                }
+            }
+        }
+    }
     //==============================================================================
     void hideOptionScreen(){
         
@@ -291,8 +315,8 @@ public:
         numNotesSlider->setVisible(true);
         inputSelector->setVisible(true);
         startButton->setVisible(true);
-        noteButton->setVisible(true);
-        chordButton->setVisible(true);
+//        noteButton->setVisible(true);
+//        chordButton->setVisible(true);
         relativeButton->setVisible(true);
         absoluteButton->setVisible(true);
         totalItemsLabel->setVisible(true);
@@ -409,10 +433,11 @@ public:
             if (seqCount<currCount){
                 if (alt == 1){
                     //wait a beat for input
+                    match = false;
                 }else {
                     if (match){
                         seqCount++;
-                        match = false;
+                //        match = false;
                     }else{
                         stopTimer();
                         hidePlayingScreen();
@@ -477,7 +502,6 @@ public:
     void handleIncomingMidiMessage (MidiInput* source, const MidiMessage& message) override
     {
         if (message.isNoteOn()){
-            DBG(String(message.getNoteNumber()));
             if (message.getNoteNumber() == pitchSequence[seqCount]){
                 match = true;
             }else{
@@ -490,7 +514,7 @@ public:
     //==============================================================================
     void handleNoteOn (MidiKeyboardState*, int midiChannel, int midiNoteNumber, float velocity) override
     {
-        
+        //keeping in case I wan't to add a midi keyboard later
         if (! isAddingFromMidiInput)
         {
             MidiMessage m (MidiMessage::noteOn (midiChannel, midiNoteNumber, velocity));
@@ -510,28 +534,42 @@ public:
     void prepareToPlay (int samplesPerBlockExpected, double sampleRate) override
     {
         currentSampleRate = sampleRate;
-        blockSize = samplesPerBlockExpected;
+        setupAubioPitch("yinfft", 8*samplesPerBlockExpected, samplesPerBlockExpected, sampleRate);
         
-        square.init(sampleRate); // initializing the Faust module
-        square.buildUserInterface(&squareControl); // linking the Faust module to the controler
+//      initialize faust objects
+        square.init(sampleRate);
+        square.buildUserInterface(&squareControl);
         
-        // Print the list of parameters address of "saw"
-        // To get the current (default) value of these parameters, sawControl.getParamValue("paramPath") can be used
-        for(int i=0; i<squareControl.getParamsCount(); i++){
-            std::cout << squareControl.getParamAdress(i) << "\n";
-        }
+        square.init(sampleRate);
+        square.buildUserInterface(&squareControl);
+
+//      print parameters
+//        for(int i=0; i<outputSquareControl.getParamsCount(); i++){
+//            std::cout << outputSquareControl.getParamAdress(i) << "\n";
+//        }
         
-        // setting default values for the Faust module parameters
-      //  squareControl.setParamValue("/square/freq",1000);
-        squareControl.setParamValue("/square/gain",0.8);
+//      setting default values
+        squareControl.setParamValue("/square/gain",0.3);
+        squareControl.setParamValue("/square/gain",0.3);
         
     }
 
     void getNextAudioBlock (const AudioSourceChannelInfo& bufferToFill) override
     {
+        blockSize = bufferToFill.buffer->getNumSamples();
+        if (input == 1 && waitForPlayer){
+            float* inBuffer = bufferToFill.buffer->getWritePointer (0, bufferToFill.startSample);
+            audioIn(inBuffer, bufferToFill.buffer->getNumSamples(), 1);
+//          to make it easier, it just has to hear the pitch in one audio block
+            if (latestPitch > pitchSequence[seqCount]-.5 &&
+                latestPitch < pitchSequence[seqCount]+.5){
+                match = true;
+            }
+        }
+        
+        bufferToFill.clearActiveBufferRegion();
         audioBuffer = bufferToFill.buffer->getArrayOfWritePointers();
         square.compute(blockSize, NULL, audioBuffer);
-        
     }
 
     void releaseResources() override
@@ -542,25 +580,29 @@ public:
     //==============================================================================
     void paint (Graphics& g) override
     {
-        g.fillAll (Colour (0xff292929));
+        //background image
+        g.drawImage (cachedImage_background,
+                     0, 0, getWidth(), getHeight(),
+                     0, 0, cachedImage_background.getWidth(), cachedImage_background.getHeight());
+//        g.fillAll (Colour (0xff292929));
 
     }
     
     //==============================================================================
     void resized() override
     {
-        playButton[0]->setBounds  (16,   64, 71, 72);
-        playButton[1]->setBounds  (112,  64, 71, 72);
-        playButton[2]->setBounds  (208,  64, 71, 72);
-        playButton[3]->setBounds  (304,  64, 71, 72);
-        playButton[4]->setBounds  (16,  240, 71, 72);
-        playButton[5]->setBounds  (112, 240, 71, 72);
-        playButton[6]->setBounds  (208, 240, 71, 72);
-        playButton[7]->setBounds  (304, 240, 71, 72);
-        playButton[8]->setBounds  (16,  400, 71, 72);
-        playButton[9]->setBounds  (112, 400, 71, 72);
-        playButton[10]->setBounds (208, 400, 71, 72);
-        playButton[11]->setBounds (304, 400, 71, 72);
+        playButton[0]->setBounds (24, 56, 71, 72);
+        playButton[1]->setBounds (152, 56, 71, 72);
+        playButton[2]->setBounds (272, 56, 71, 72);
+        playButton[3]->setBounds (24, 184, 71, 72);
+        playButton[4]->setBounds (152, 184, 71, 72);
+        playButton[5]->setBounds (272, 184, 71, 72);
+        playButton[6]->setBounds (24, 328, 71, 72);
+        playButton[7]->setBounds (152, 328, 71, 72);
+        playButton[8]->setBounds (272, 328, 71, 72);
+        playButton[9]->setBounds (24, 456, 71, 72);
+        playButton[10]->setBounds (152, 456, 71, 72);
+        playButton[11]->setBounds (272, 456, 71, 72);
         
         keySelector->setBounds (120, 160, 72, 40);
         octaveSelector->setBounds (32, 160, 72, 40);
@@ -570,12 +612,73 @@ public:
         startButton->setBounds (24, 448, 328, 72);
         noteButton->setBounds (32, 72, 72, 24);
         chordButton->setBounds (104, 72, 72, 24);
-        relativeButton->setBounds (200, 72, 72, 24);
-        absoluteButton->setBounds (272, 72, 72, 24);
+        relativeButton->setBounds (120, 48, 72, 24);
+        absoluteButton->setBounds (192, 48, 72, 24);
+//        relativeButton->setBounds (200, 72, 72, 24);
+//        absoluteButton->setBounds (272, 72, 72, 24);
         totalItemsLabel->setBounds (272, 120, 72, 24);
         bpmLabel->setBounds (208, 120, 56, 24);
     }
+    //==============================================================================
+    void setupAubioBlock(std::string method, int buf_s, int hop_s, int samplerate)
+    {
+        hop_size = (uint_t)hop_s;
+        buf_size = (uint_t)buf_s;
+        aubio_input = new_fvec(hop_size);
+        aubio_output = new_fvec(1);
+        curpos = 0;
+    }
 
+    //==============================================================================
+    void setupAubioPitch(std::string method, int buf_s, int hop_s, int samplerate)
+    {
+        setupAubioBlock(method, buf_s, hop_s, samplerate);
+        pitch = new_aubio_pitch((char_t*)method.c_str(), buf_size, hop_size, samplerate);
+        aubio_pitch_set_unit(pitch, (char_t*)"midi");
+        //aubio_pitch_set_tolerance(pitch, 0.7);
+    }
+    
+    //==============================================================================
+    void closeAubioPitch()
+    {
+        if (pitch) del_aubio_pitch(pitch);
+        cleanup();
+    }
+    
+    //==============================================================================
+    void blockAudioIn()
+    {
+        aubio_pitch_do(pitch, aubio_input, aubio_output);
+        //ofLogNotice() << "found pitch: " << aubio_output->data[0];
+        pitchConfidence = aubio_pitch_get_confidence(pitch);
+        latestPitch = aubio_output->data[0];
+    }
+    //==============================================================================
+    void audioIn(float * input, int bufferSize, int nChannels)
+    {
+        uint_t i, j;
+        for (i = 0; i < bufferSize; i++) {
+            // downmix into aubio_input
+            aubio_input->data[curpos] = 0.;
+            for (j = 0; j < nChannels; j++) {
+                aubio_input->data[curpos] += input[i * nChannels + j];
+            }
+            aubio_input->data[curpos] /= (smpl_t)nChannels;
+            // run aubio block when appropriate
+            curpos += 1;
+            if (curpos == hop_size)
+            {
+                blockAudioIn();
+                curpos = 0;
+            }
+        }
+    }
+    //==============================================================================
+    void cleanup()
+    {
+        if (aubio_input) del_fvec(aubio_input);
+        if (aubio_output) del_fvec(aubio_output);
+    }
 
 private:
     //==============================================================================
@@ -635,11 +738,25 @@ private:
     Square square;
     MapUI  squareControl;
     
+    // midi vars
     AudioDeviceManager deviceManager;
     MidiKeyboardState keyboardState;
     int lastInputIndex;
     double startTime;
     bool isAddingFromMidiInput = false;
+    
+    Image cachedImage_background;
+    
+    // aubio vars
+    aubio_pitch_t * pitch;
+    float latestPitch;
+    float pitchConfidence;
+    uint_t buf_size;
+    uint_t hop_size;
+    uint_t curpos;
+    fvec_t * aubio_input;
+    fvec_t * aubio_output;
+
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainContentComponent)
 };

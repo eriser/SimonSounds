@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "B5603B89D1F561DD30C2F35B"
+               BlueprintIdentifier = "E01E3AE810EDB0E2B83C8496"
                BuildableName = "SimonSounds.app"
                BlueprintName = "SimonSounds (App)"
                ReferencedContainer = "container:SimonSounds.xcodeproj">
@@ -32,7 +32,7 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "B5603B89D1F561DD30C2F35B"
+            BlueprintIdentifier = "E01E3AE810EDB0E2B83C8496"
             BuildableName = "SimonSounds.app"
             BlueprintName = "SimonSounds (App)"
             ReferencedContainer = "container:SimonSounds.xcodeproj">
@@ -52,7 +52,7 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "B5603B89D1F561DD30C2F35B"
+            BlueprintIdentifier = "E01E3AE810EDB0E2B83C8496"
             BuildableName = "SimonSounds.app"
             BlueprintName = "SimonSounds (App)"
             ReferencedContainer = "container:SimonSounds.xcodeproj">
@@ -71,7 +71,7 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "B5603B89D1F561DD30C2F35B"
+            BlueprintIdentifier = "E01E3AE810EDB0E2B83C8496"
             BuildableName = "SimonSounds.app"
             BlueprintName = "SimonSounds (App)"
             ReferencedContainer = "container:SimonSounds.xcodeproj">

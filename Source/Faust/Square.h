@@ -676,27 +676,26 @@ class Square : public dsp {
 	float 	fConst2;
 	FAUSTFLOAT 	fentry0;
 	int 	iVec0[4];
-	float 	fRec0[2];
-	FAUSTFLOAT 	fbutton0;
-	float 	fRec1[2];
 	float 	fConst3;
-	FAUSTFLOAT 	fentry1;
-	float 	fRec3[2];
-	float 	fRec2[2];
+	float 	fConst4;
+	float 	fRec0[2];
 	float 	fVec1[2];
 	float 	fVec2[2];
 	float 	fVec3[2];
 	int 	IOTA;
 	float 	fVec4[4096];
-	float 	fConst4;
+	FAUSTFLOAT 	fentry1;
+	float 	fRec1[2];
+	FAUSTFLOAT 	fbutton0;
+	float 	fRec2[2];
 	int fSamplingFreq;
 
   public:
 	virtual void metadata(Meta* m) { 
-		m->declare("miscoscillator.lib/name", "Faust Oscillator Library");
-		m->declare("miscoscillator.lib/version", "0.0");
 		m->declare("signal.lib/name", "Faust Signal Routing Library");
 		m->declare("signal.lib/version", "0.0");
+		m->declare("miscoscillator.lib/name", "Faust Oscillator Library");
+		m->declare("miscoscillator.lib/version", "0.0");
 		m->declare("math.lib/name", "Faust Math Library");
 		m->declare("math.lib/version", "2.0");
 		m->declare("math.lib/author", "GRAME");
@@ -712,26 +711,25 @@ class Square : public dsp {
 		fSamplingFreq = samplingFreq;
 		fConst0 = min(1.92e+05f, max(1.0f, (float)fSamplingFreq));
 		fConst1 = float(fConst0);
-		fConst2 = (0.0052083335f * faustpower<3>(fConst1));
-		fConst3 = (1.0f / fConst0);
-		fConst4 = (0.5f * fConst1);
+		fConst2 = (0.020833334f * fConst1);
+		fConst3 = (0.5f * fConst1);
+		fConst4 = (1.0f / fConst0);
 	}
 	virtual void instanceResetUserInterface() {
-		fentry0 = 0.0f;
+		fentry0 = 4.4e+02f;
+		fentry1 = 1.0f;
 		fbutton0 = 0.0;
-		fentry1 = 4.4e+02f;
 	}
 	virtual void instanceClear() {
 		for (int i=0; i<4; i++) iVec0[i] = 0;
 		for (int i=0; i<2; i++) fRec0[i] = 0;
-		for (int i=0; i<2; i++) fRec1[i] = 0;
-		for (int i=0; i<2; i++) fRec3[i] = 0;
-		for (int i=0; i<2; i++) fRec2[i] = 0;
 		for (int i=0; i<2; i++) fVec1[i] = 0;
 		for (int i=0; i<2; i++) fVec2[i] = 0;
 		for (int i=0; i<2; i++) fVec3[i] = 0;
 		IOTA = 0;
 		for (int i=0; i<4096; i++) fVec4[i] = 0;
+		for (int i=0; i<2; i++) fRec1[i] = 0;
+		for (int i=0; i<2; i++) fRec2[i] = 0;
 	}
 	virtual void init(int samplingFreq) {
 		classInit(samplingFreq);
@@ -750,46 +748,48 @@ class Square : public dsp {
 	}
 	virtual void buildUserInterface(UI* ui_interface) {
 		ui_interface->openHorizontalBox("square");
-		ui_interface->addNumEntry("freq", &fentry1, 4.4e+02f, 2e+01f, 2e+04f, 0.01f);
-		ui_interface->addNumEntry("gain", &fentry0, 0.0f, 0.0f, 1.0f, 0.01f);
+		ui_interface->addNumEntry("freq", &fentry0, 4.4e+02f, 2e+01f, 2e+04f, 0.01f);
+		ui_interface->addNumEntry("gain", &fentry1, 1.0f, 0.0f, 1.0f, 0.01f);
 		ui_interface->addButton("gate", &fbutton0);
 		ui_interface->closeBox();
 	}
 	virtual void compute (int count, FAUSTFLOAT** input, FAUSTFLOAT** output) {
-		float 	fSlow0 = (0.001f * float(fentry0));
-		float 	fSlow1 = (0.001f * float(fbutton0));
-		float 	fSlow2 = (0.001f * float(fentry1));
+		float 	fSlow0 = max(float(fentry0), 23.44895f);
+		float 	fSlow1 = max(2e+01f, fabsf(fSlow0));
+		float 	fSlow2 = (fConst2 / fSlow1);
+		float 	fSlow3 = (fConst3 / fSlow1);
+		float 	fSlow4 = (fConst4 * fSlow1);
+		float 	fSlow5 = max((float)0, min((float)2047, (fConst3 / fSlow0)));
+		float 	fSlow6 = floorf(fSlow5);
+		float 	fSlow7 = (fSlow6 + (1 - fSlow5));
+		int 	iSlow8 = int(fSlow5);
+		float 	fSlow9 = (fSlow5 - fSlow6);
+		int 	iSlow10 = int((iSlow8 + 1));
+		float 	fSlow11 = (0.001f * float(fentry1));
+		float 	fSlow12 = (0.001f * float(fbutton0));
 		FAUSTFLOAT* output0 = output[0];
 		for (int i=0; i<count; i++) {
 			iVec0[0] = 1;
-			fRec0[0] = (fSlow0 + (0.999f * fRec0[1]));
-			fRec1[0] = (fSlow1 + (0.999f * fRec1[1]));
-			fRec3[0] = (fSlow2 + (0.999f * fRec3[1]));
-			float fTemp0 = max(fRec3[0], 23.44895f);
-			float fTemp1 = max(2e+01f, fabsf(fTemp0));
-			float fTemp2 = (fRec2[1] + (fConst3 * fTemp1));
-			fRec2[0] = (fTemp2 - floorf(fTemp2));
-			float fTemp3 = faustpower<2>(((2 * fRec2[0]) + -1));
-			float fTemp4 = (fTemp3 * (fTemp3 + -2.0f));
-			fVec1[0] = fTemp4;
-			float fTemp5 = ((fVec1[0] - fVec1[1]) / fTemp1);
-			fVec2[0] = fTemp5;
-			float fTemp6 = ((fVec2[0] - fVec2[1]) / fTemp1);
-			fVec3[0] = fTemp6;
-			float fTemp7 = ((iVec0[3] * (fVec3[0] - fVec3[1])) / fTemp1);
-			fVec4[IOTA&4095] = fTemp7;
-			float fTemp8 = max((float)0, min((float)2047, (fConst4 / fTemp0)));
-			int iTemp9 = int(fTemp8);
-			float fTemp10 = floorf(fTemp8);
-			output0[i] = (FAUSTFLOAT)(fConst2 * ((fRec0[0] * fRec1[0]) * (fVec4[IOTA&4095] - ((fVec4[(IOTA-iTemp9)&4095] * (fTemp10 + (1 - fTemp8))) + ((fTemp8 - fTemp10) * fVec4[(IOTA-int((iTemp9 + 1)))&4095])))));
+			fRec0[0] = (fSlow4 + (fRec0[1] - floorf((fSlow4 + fRec0[1]))));
+			float fTemp0 = faustpower<2>(((2 * fRec0[0]) + -1));
+			float fTemp1 = (fTemp0 * (fTemp0 + -2.0f));
+			fVec1[0] = fTemp1;
+			float fTemp2 = (fSlow3 * (fVec1[0] - fVec1[1]));
+			fVec2[0] = fTemp2;
+			float fTemp3 = (fSlow3 * (fVec2[0] - fVec2[1]));
+			fVec3[0] = fTemp3;
+			float fTemp4 = (fSlow2 * (iVec0[3] * (fVec3[0] - fVec3[1])));
+			fVec4[IOTA&4095] = fTemp4;
+			fRec1[0] = (fSlow11 + (0.999f * fRec1[1]));
+			fRec2[0] = (fSlow12 + (0.999f * fRec2[1]));
+			output0[i] = (FAUSTFLOAT)(((fVec4[IOTA&4095] - ((fSlow7 * fVec4[(IOTA-iSlow8)&4095]) + (fSlow9 * fVec4[(IOTA-iSlow10)&4095]))) * fRec1[0]) * fRec2[0]);
 			// post processing
+			fRec2[1] = fRec2[0];
+			fRec1[1] = fRec1[0];
 			IOTA = IOTA+1;
 			fVec3[1] = fVec3[0];
 			fVec2[1] = fVec2[0];
 			fVec1[1] = fVec1[0];
-			fRec2[1] = fRec2[0];
-			fRec3[1] = fRec3[0];
-			fRec1[1] = fRec1[0];
 			fRec0[1] = fRec0[0];
 			for (int i=3; i>0; i--) iVec0[i] = iVec0[i-1];
 		}
