@@ -29,6 +29,7 @@ model {
         ldLibs.add("EGL")
         ldLibs.add("GLESv2")
         ldLibs.add("log")
+        ldLibs.add("aubio-android")
     }
     android.sources {
         main {

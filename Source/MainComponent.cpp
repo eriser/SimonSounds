@@ -149,6 +149,51 @@ public:
         bpmLabel->setColour (TextEditor::textColourId, Colours::black);
         bpmLabel->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
         
+        addAndMakeVisible (octaveLabel = new Label ("octaveLabel",
+                                                    TRANS("Octave")));
+        octaveLabel->setFont (Font (15.00f, Font::plain));
+        octaveLabel->setJustificationType (Justification::centred);
+        octaveLabel->setEditable (false, false, false);
+        octaveLabel->setColour (Label::textColourId, Colours::white);
+        octaveLabel->setColour (TextEditor::textColourId, Colours::black);
+        octaveLabel->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
+        
+        addAndMakeVisible (keyLabel = new Label ("keyLabel",
+                                                 TRANS("Key")));
+        keyLabel->setFont (Font (15.00f, Font::plain));
+        keyLabel->setJustificationType (Justification::centred);
+        keyLabel->setEditable (false, false, false);
+        keyLabel->setColour (Label::textColourId, Colours::white);
+        keyLabel->setColour (TextEditor::textColourId, Colours::black);
+        keyLabel->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
+        
+        addAndMakeVisible (inputLabel = new Label ("inputLabel",
+                                                   TRANS("Input")));
+        inputLabel->setFont (Font (15.00f, Font::plain));
+        inputLabel->setJustificationType (Justification::centred);
+        inputLabel->setEditable (false, false, false);
+        inputLabel->setColour (Label::textColourId, Colours::white);
+        inputLabel->setColour (TextEditor::textColourId, Colours::black);
+        inputLabel->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
+        
+        addAndMakeVisible (highScoreLabel = new Label ("highScoreLabel",
+                                                       TRANS("High Score:")));
+        highScoreLabel->setFont (Font (15.00f, Font::plain));
+        highScoreLabel->setJustificationType (Justification::centred);
+        highScoreLabel->setEditable (false, false, false);
+        highScoreLabel->setColour (Label::textColourId, Colours::white);
+        highScoreLabel->setColour (TextEditor::textColourId, Colours::black);
+        highScoreLabel->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
+        
+        addAndMakeVisible (highScoreBox = new Label ("highScoreBox",
+                                                     TRANS("0")));
+        highScoreBox->setFont (Font (15.00f, Font::plain));
+        highScoreBox->setJustificationType (Justification::centred);
+        highScoreBox->setEditable (false, false, false);
+        highScoreBox->setColour (Label::textColourId, Colours::white);
+        highScoreBox->setColour (TextEditor::textColourId, Colours::black);
+        highScoreBox->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
+        
         for (int i=0;i<12;i++){
             playButton.add(new TextButton ("playButton" + String(i)));
             playButton[i]->addListener(this);
@@ -196,7 +241,11 @@ public:
         absoluteButton = nullptr;
         totalItemsLabel = nullptr;
         bpmLabel = nullptr;
-        
+        octaveLabel = nullptr;
+        keyLabel = nullptr;
+        inputLabel = nullptr;
+        highScoreLabel = nullptr;
+        highScoreBox = nullptr;
         closeAubioPitch();
         shutdownAudio();
     }
@@ -304,7 +353,11 @@ public:
         absoluteButton->setVisible(false);
         totalItemsLabel->setVisible(false);
         bpmLabel->setVisible(false);
-    
+        keyLabel->setVisible(false);
+        octaveLabel->setVisible(false);
+        inputLabel->setVisible(false);
+        highScoreLabel->setVisible(false);
+        highScoreBox->setVisible(false);
     }
     //==============================================================================
     void displayOptionScreen(){
@@ -321,7 +374,11 @@ public:
         absoluteButton->setVisible(true);
         totalItemsLabel->setVisible(true);
         bpmLabel->setVisible(true);
-    
+        keyLabel->setVisible(true);
+        octaveLabel->setVisible(true);
+        inputLabel->setVisible(true);
+        highScoreLabel->setVisible(true);
+        highScoreBox->setVisible(true);
     }
     //==============================================================================
     void hidePlayingScreen(){
@@ -433,11 +490,15 @@ public:
             if (seqCount<currCount){
                 if (alt == 1){
                     //wait a beat for input
-                    match = false;
+                  //  match = false;
                 }else {
                     if (match){
                         seqCount++;
-                //        match = false;
+                        if (seqCount > highScore){
+                            highScore = seqCount;
+                            highScoreBox->setText(String(highScore), dontSendNotification);
+                        }
+                        match = false;
                     }else{
                         stopTimer();
                         hidePlayingScreen();
@@ -618,6 +679,11 @@ public:
 //        absoluteButton->setBounds (272, 72, 72, 24);
         totalItemsLabel->setBounds (272, 120, 72, 24);
         bpmLabel->setBounds (208, 120, 56, 24);
+        octaveLabel->setBounds (40, 120, 56, 24);
+        keyLabel->setBounds (128, 120, 56, 24);
+        inputLabel->setBounds (160, 312, 56, 24);
+        highScoreLabel->setBounds (88, 8, 88, 24);
+        highScoreBox->setBounds (200, 8, 56, 24);
     }
     //==============================================================================
     void setupAubioBlock(std::string method, int buf_s, int hop_s, int samplerate)
@@ -688,6 +754,7 @@ private:
     float   seqArray[300];
     int     currCount;
     int     seqCount;
+    int     highScore;
     int     alt;
     bool    waitForPlayer;
     bool    match = false;
@@ -714,6 +781,11 @@ private:
     ScopedPointer<TextButton> absoluteButton;
     ScopedPointer<Label> totalItemsLabel;
     ScopedPointer<Label> bpmLabel;
+    ScopedPointer<Label> octaveLabel;
+    ScopedPointer<Label> keyLabel;
+    ScopedPointer<Label> inputLabel;
+    ScopedPointer<Label> highScoreLabel;
+    ScopedPointer<Label> highScoreBox;
     
     std::vector<int> notesAllowed;
     std::vector<int> baseScale;

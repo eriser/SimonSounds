@@ -13,7 +13,7 @@ namespace BinaryData
     const int            README_mdSize = 283;
 
     extern const char*   background_jpg;
-    const int            background_jpgSize = 240195;
+    const int            background_jpgSize = 248764;
 
     // Points to the start of a list of resource names.
     extern const char* namedResourceList[];

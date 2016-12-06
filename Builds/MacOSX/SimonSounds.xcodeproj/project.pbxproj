@@ -24,7 +24,7 @@
 		889A60B2AB4BE1309BD56E21 /* juce_core.mm in Sources */ = {isa = PBXBuildFile; fileRef = 83E61265CDFFBE08328E4020 /* juce_core.mm */; };
 		8BFA4B92E17E84787264C2D4 /* juce_video.mm in Sources */ = {isa = PBXBuildFile; fileRef = 09C64BC73A69E6D418BF9067 /* juce_video.mm */; };
 		91DADD97EAD9A3FD68180DE3 /* RecentFilesMenuTemplate.nib in Resources */ = {isa = PBXBuildFile; fileRef = BCA3BB78E41F9D10849F1AE2 /* RecentFilesMenuTemplate.nib */; };
-		9E11531D1DF69AE200C3A838 /* aubio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9E11531C1DF69AE200C3A838 /* aubio.framework */; };
+		9E1153211DF76A8600C3A838 /* aubio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9E1153201DF76A8600C3A838 /* aubio.framework */; };
 		A1F30D925A92FD5E6894D780 /* BinaryData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 520486F78995CC08D2A97A7F /* BinaryData.cpp */; };
 		ACEBD6D0B2B1B53C3F8D0559 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DDADA096614D8D7697794D9D /* Cocoa.framework */; };
 		B6C2DEA5FE938BA498A2FFF9 /* QTKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EB067D5DD09BE6CB1ECCFE1F /* QTKit.framework */; };
@@ -778,7 +778,7 @@
 		9DBCF0E4A3DE02BC31D9688B /* juce_BigInteger.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = juce_BigInteger.h; path = "../../../../juce-grapefruit-osx/JUCE/modules/juce_core/maths/juce_BigInteger.h"; sourceTree = SOURCE_ROOT; };
 		9DC2470782C9ACFF889E4C95 /* juce_NamedValueSet.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = juce_NamedValueSet.h; path = "../../../../juce-grapefruit-osx/JUCE/modules/juce_core/containers/juce_NamedValueSet.h"; sourceTree = SOURCE_ROOT; };
 		9DCD7DF22F05699DC8A7B690 /* juce_FlacAudioFormat.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = juce_FlacAudioFormat.h; path = "../../../../juce-grapefruit-osx/JUCE/modules/juce_audio_formats/codecs/juce_FlacAudioFormat.h"; sourceTree = SOURCE_ROOT; };
-		9E11531C1DF69AE200C3A838 /* aubio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = aubio.framework; path = ../../aubio.framework; sourceTree = "<group>"; };
+		9E1153201DF76A8600C3A838 /* aubio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = aubio.framework; path = ../../aubio.framework; sourceTree = "<group>"; };
 		9E53524AB992B449AC757649 /* juce_FileBasedDocument.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = juce_FileBasedDocument.h; path = "../../../../juce-grapefruit-osx/JUCE/modules/juce_gui_extra/documents/juce_FileBasedDocument.h"; sourceTree = SOURCE_ROOT; };
 		9E8083D96A577146A5401E0E /* stream_encoder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = stream_encoder.h; path = "../../../../juce-grapefruit-osx/JUCE/modules/juce_audio_formats/codecs/flac/libFLAC/include/protected/stream_encoder.h"; sourceTree = SOURCE_ROOT; };
 		9E93F39CBDC9FAFE631F5361 /* juce_AudioProcessor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = juce_AudioProcessor.h; path = "../../../../juce-grapefruit-osx/JUCE/modules/juce_audio_processors/processors/juce_AudioProcessor.h"; sourceTree = SOURCE_ROOT; };
@@ -1257,7 +1257,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9E11531D1DF69AE200C3A838 /* aubio.framework in Frameworks */,
+				9E1153211DF76A8600C3A838 /* aubio.framework in Frameworks */,
 				F4EB069F43E93AA4CC3044DE /* Accelerate.framework in Frameworks */,
 				545D537DBD1362F8449EBE34 /* AudioToolbox.framework in Frameworks */,
 				DAEDA5C5FB3A5E2E29D18291 /* Carbon.framework in Frameworks */,
@@ -1801,7 +1801,7 @@
 		4B725E0657740322B76559B7 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				9E11531C1DF69AE200C3A838 /* aubio.framework */,
+				9E1153201DF76A8600C3A838 /* aubio.framework */,
 				C448B7B0A245521B97E46B31 /* Accelerate.framework */,
 				0455F6768CB9DD5B2DE8FD9A /* AudioToolbox.framework */,
 				FA17973B4C97043E94B45C04 /* Carbon.framework */,

@@ -75,7 +75,8 @@
         <MODULEPATH id="juce_audio_utils" path="../../juce-grapefruit-osx/JUCE/modules"/>
       </MODULEPATHS>
     </XCODE_IPHONE>
-    <ANDROIDSTUDIO targetFolder="Builds/AndroidStudio">
+    <ANDROIDSTUDIO targetFolder="Builds/AndroidStudio" androidSDKPath="" androidNDKPath=""
+                   externalLibraries="aubio-android">
       <CONFIGURATIONS>
         <CONFIGURATION name="Debug" androidArchitectures="armeabi armeabi-v7a x86" isDebug="1"
                        optimisation="1" targetName="SimonSounds"/>
