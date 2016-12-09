@@ -102,7 +102,7 @@ public:
         noteButton->setConnectedEdges (Button::ConnectedOnRight);
         noteButton->setRadioGroupId (1234);
         noteButton->setClickingTogglesState(true);
-        noteButton->setToggleState(true, true);
+        noteButton->setToggleState(true, sendNotification);
         noteButton->addListener (this);
         
         addChildComponent(chordButton = new TextButton ("chordButton"));
@@ -118,7 +118,7 @@ public:
         relativeButton->setConnectedEdges (Button::ConnectedOnRight);
         relativeButton->setRadioGroupId (2345);
         relativeButton->setClickingTogglesState(true);
-        relativeButton->setToggleState(true, true);
+        relativeButton->setToggleState(true, sendNotification);
         relativeButton->addListener (this);
         relativeButton->setColour (TextButton::buttonOnColourId, Colour (0xff656566));
         
@@ -766,8 +766,8 @@ private:
     int  BPM;
     int  numNotes;
     int  input;
-    bool noteMode;
-    bool relativeMode;
+    bool noteMode = true;
+    bool relativeMode = true;
     
     ScopedPointer<ComboBox> keySelector;
     ScopedPointer<ComboBox> octaveSelector;

@@ -3657,6 +3657,8 @@
 					"$(inherited)",
 					/Users/meganjurek/Desktop/Dev/JUCE,
 					Projects/SimonSounds,
+					/Users/meganjurek/Desktop/Dev/JUCE,
+					Projects/SimonSounds,
 				);
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -3692,6 +3694,8 @@
 				DEAD_CODE_STRIPPING = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
+					/Users/meganjurek/Desktop/Dev/JUCE,
+					Projects/SimonSounds,
 					/Users/meganjurek/Desktop/Dev/JUCE,
 					Projects/SimonSounds,
 				);
