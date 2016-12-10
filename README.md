@@ -2,6 +2,7 @@
 A one-player game for ear training. Mimics the rules of Simon Says.
 
 ## Dependencies
+Juce 4.3
 The Aubio Framework, which is included in this repository. It can also be found [here](https://www.aubio.org).
 
 ## Installation
