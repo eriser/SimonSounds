@@ -631,6 +631,9 @@ public:
         bufferToFill.clearActiveBufferRegion();
         audioBuffer = bufferToFill.buffer->getArrayOfWritePointers();
         square.compute(blockSize, NULL, audioBuffer);
+        for (int i=0;i<blockSize;i++){
+            bufferToFill.buffer->setSample(1, i, audioBuffer[0][i]);
+        }
     }
 
     void releaseResources() override
