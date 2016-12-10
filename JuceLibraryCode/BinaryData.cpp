@@ -7,22 +7,8 @@
 namespace BinaryData
 {
 
-//================== README.md ==================
-static const unsigned char temp_binary_data_0[] =
-"# PitchDetector\n"
-"JUCE module for pitch estimation\n"
-"\n"
-"PitchYIN class based on the YIN implementation found in the aubio library\n"
-"\n"
-"PitchMPM class adapted from the McLeod Pitch Method implementation in https://github.com/sevagh/pitch-detection\n"
-"\n"
-"\n"
-"Soon to be made into a proper JUCE module! \n";
-
-const char* README_md = (const char*) temp_binary_data_0;
-
 //================== background.jpg ==================
-static const unsigned char temp_binary_data_1[] =
+static const unsigned char temp_binary_data_0[] =
 { 255,216,255,224,0,16,74,70,73,70,0,1,1,0,0,72,0,72,0,0,255,225,0,128,69,120,105,102,0,0,77,77,0,42,0,0,0,8,0,5,1,18,0,3,0,0,0,1,0,1,0,0,1,26,0,5,0,0,0,1,0,0,0,74,1,27,0,5,0,0,0,1,0,0,0,82,1,40,0,3,0,0,0,1,0,2,0,0,135,105,0,4,0,0,0,1,0,0,0,90,0,0,0,0,
 0,0,0,72,0,0,0,1,0,0,0,72,0,0,0,1,0,2,160,2,0,4,0,0,0,1,0,0,3,32,160,3,0,4,0,0,0,1,0,0,5,0,0,0,0,0,255,237,0,56,80,104,111,116,111,115,104,111,112,32,51,46,48,0,56,66,73,77,4,4,0,0,0,0,0,0,56,66,73,77,4,37,0,0,0,0,0,16,212,29,140,217,143,0,178,4,233,
 128,9,152,236,248,66,126,255,226,26,12,73,67,67,95,80,82,79,70,73,76,69,0,1,1,0,0,25,252,97,112,112,108,2,16,0,0,109,110,116,114,82,71,66,32,88,89,90,32,7,219,0,2,0,25,0,16,0,26,0,59,97,99,115,112,65,80,80,76,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -3530,7 +3516,7 @@ static const unsigned char temp_binary_data_1[] =
 191,106,114,62,167,218,177,150,123,70,200,55,27,112,171,143,222,14,217,166,7,67,51,92,126,229,131,75,187,63,54,23,166,88,214,41,184,179,49,161,55,75,157,227,31,190,247,250,85,115,1,212,195,230,153,28,121,211,100,161,235,156,119,172,184,36,132,111,41,
 123,19,0,189,60,225,222,133,32,52,161,123,152,163,141,132,219,119,16,121,83,233,238,42,40,229,44,187,86,127,53,128,24,197,192,231,20,238,7,255,217,0,0 };
 
-const char* background_jpg = (const char*) temp_binary_data_1;
+const char* background_jpg = (const char*) temp_binary_data_0;
 
 
 const char* getNamedResource (const char*, int&) throw();
@@ -3543,7 +3529,6 @@ const char* getNamedResource (const char* resourceNameUTF8, int& numBytes) throw
 
     switch (hash)
     {
-        case 0x64791dc8:  numBytes = 283; return README_md;
         case 0x551ad950:  numBytes = 248764; return background_jpg;
         default: break;
     }
@@ -3554,7 +3539,6 @@ const char* getNamedResource (const char* resourceNameUTF8, int& numBytes) throw
 
 const char* namedResourceList[] =
 {
-    "README_md",
     "background_jpg"
 };
 

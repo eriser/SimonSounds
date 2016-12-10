@@ -5,22 +5,9 @@
               jucerVersion="4.3.0">
   <MAINGROUP id="xNq0cG" name="SimonSounds">
     <GROUP id="{DDB89F94-7AB1-62AB-1071-8CC342D48F16}" name="Source">
-      <GROUP id="{8DD87D60-4C9C-A039-A126-3F15619C6EE7}" name="PitchDetector">
-        <GROUP id="{468D2ABB-3C4A-E636-22D3-554260A7A40A}" name="modules">
-          <FILE id="y6wBZO" name="PitchMPM.h" compile="0" resource="0" file="PitchDetector/modules/PitchMPM.h"/>
-          <FILE id="g7ge7V" name="PitchYIN.h" compile="0" resource="0" file="PitchDetector/modules/PitchYIN.h"/>
-        </GROUP>
-        <FILE id="bi7XSm" name="README.md" compile="0" resource="1" file="PitchDetector/README.md"/>
-      </GROUP>
       <GROUP id="{C2D4809D-5A48-304E-A7C3-138017D63BE1}" name="Faust">
         <FILE id="Aq1gVC" name="Square.h" compile="0" resource="0" file="../SimonSounds/Source/Faust/Square.h"/>
       </GROUP>
-      <FILE id="w7HaG1" name="OptionScreen.cpp" compile="1" resource="0"
-            file="Source/OptionScreen.cpp"/>
-      <FILE id="MeEEZN" name="OptionScreen.h" compile="0" resource="0" file="Source/OptionScreen.h"/>
-      <FILE id="CNaU3A" name="PlayingScreen.h" compile="0" resource="0" file="Source/PlayingScreen.h"/>
-      <FILE id="YTh9GV" name="PlayingScreen.cpp" compile="1" resource="0"
-            file="Source/PlayingScreen.cpp"/>
       <FILE id="pX3Abj" name="MainComponent.cpp" compile="1" resource="0"
             file="Source/MainComponent.cpp"/>
       <FILE id="I6QpQC" name="Main.cpp" compile="1" resource="0" file="Source/Main.cpp"/>
@@ -28,7 +15,7 @@
     <FILE id="VhO8Rb" name="background.jpg" compile="0" resource="1" file="background.jpg"/>
   </MAINGROUP>
   <EXPORTFORMATS>
-    <XCODE_MAC targetFolder="Builds/MacOSX" externalLibraries="" extraFrameworks="">
+    <XCODE_MAC targetFolder="Builds/MacOSX" externalLibraries="" extraFrameworks="/Users/meganjurek/Desktop/Dev/JUCE Projects/SimonSounds/aubio">
       <CONFIGURATIONS>
         <CONFIGURATION name="Debug" isDebug="1" optimisation="1" targetName="SimonSounds"
                        libraryPath=""/>
